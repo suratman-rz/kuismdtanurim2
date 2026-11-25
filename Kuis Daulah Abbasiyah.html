@@ -1,0 +1,225 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Kuis Daulah Abbasiyah</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap">
+<style>
+/* Satu kolom: data peserta, 25 soal dengan bar progres menempel, lalu kartu nilai melingkar */
+:root{
+  --bg:#eef3f4; --card:#ffffff; --fg:#14272f; --muted:#546a73; --line:#cfdcdf;
+  --accent:#12557a; --on-accent:#ffffff; --soft:#e0eef5; --gold:#a9781c;
+  --good:#1d7447; --good-soft:#e0f2e8; --bad:#ad3434; --bad-soft:#f9e5e5;
+  --head:'Amiri',Georgia,serif; --body:'Plus Jakarta Sans',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d191f; --card:#14252d; --fg:#e6eff1; --muted:#9bb1b9; --line:#2a424d;
+  --accent:#6cc0e6; --on-accent:#08202c; --soft:#183645; --gold:#e0b355;
+  --good:#6fd39c; --good-soft:#143527; --bad:#f09090; --bad-soft:#3d1f22; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d191f; --card:#14252d; --fg:#e6eff1; --muted:#9bb1b9; --line:#2a424d;
+  --accent:#6cc0e6; --on-accent:#08202c; --soft:#183645; --gold:#e0b355;
+  --good:#6fd39c; --good-soft:#143527; --bad:#f09090; --bad-soft:#3d1f22; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.6 var(--body)}
+.wrap{max-width:680px;margin:0 auto;padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2{font-family:var(--head);line-height:1.3;margin:0;text-wrap:balance}
+h1{font-size:2.1rem} h2{font-size:1.7rem}
+header{text-align:center;margin-bottom:20px}
+header svg{display:block;margin:0 auto 6px;color:var(--gold)}
+header p{margin:4px 0 0;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+label.field{display:block;font-weight:700;margin-bottom:14px}
+input[type=text]{display:block;width:100%;margin-top:6px;padding:12px;font:16px var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px}
+button{font:700 16px var(--body);padding:13px 20px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);cursor:pointer;width:100%}
+button.ghost{background:transparent;color:var(--accent)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.error{color:var(--bad);font-weight:700;margin:0 0 12px}
+.progress{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;background:var(--bg);padding-block:10px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:12;background:var(--bg)}
+.progress div:first-child{display:flex;justify-content:space-between;gap:12px;font-size:.875rem;color:var(--muted)}
+.progress span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.progress span:last-child{white-space:nowrap;font-variant-numeric:tabular-nums}
+.bar{height:6px;border-radius:3px;background:var(--line);margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent)}
+fieldset{border:1px solid var(--line);background:var(--card);border-radius:12px;margin:0 0 14px;padding:16px;min-width:0;scroll-margin-top:70px}
+fieldset.missing{border-color:var(--bad);border-width:2px}
+legend{float:left;width:100%;padding:0;margin-bottom:12px;font-weight:700}
+legend+*{clear:both}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:8px;margin-top:8px;cursor:pointer}
+.opt input{margin:5px 0 0;accent-color:var(--accent);flex:none}
+.opt span{min-width:0}
+.opt:has(input:checked){background:var(--soft);border-color:var(--accent)}
+.result{text-align:center}
+.result h2{color:var(--accent)}
+.who{font-size:1.3rem;font-weight:700;margin:14px 0 0;overflow-wrap:anywhere}
+.meta{color:var(--muted);margin:0;font-size:.9rem}
+.score{width:190px;height:190px;margin:20px auto;border-radius:50%;display:grid;place-content:center;border:3px double var(--gold);outline:8px solid var(--soft);outline-offset:-18px}
+.score small{color:var(--muted);font-weight:700}
+.score b{font:700 4.4rem/1.1 var(--head);font-variant-numeric:tabular-nums}
+.tally{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+.tally span{padding:6px 14px;border-radius:20px;font-weight:700}
+.ok{background:var(--good-soft);color:var(--good)}
+.no{background:var(--bad-soft);color:var(--bad)}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:8px 0 20px;padding:0;list-style:none}
+.grid li{border-radius:8px;padding:6px 0;font-weight:700;font-variant-numeric:tabular-nums}
+</style>
+
+<main class="wrap">
+  <header>
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="10" y="10" width="24" height="24"/><rect x="10" y="10" width="24" height="24" transform="rotate(45 22 22)"/><circle cx="22" cy="22" r="6"/></svg>
+    <h1>Kuis Daulah Abbasiyah</h1>
+    <p>Sejarah Kebudayaan Islam · 25 soal pilihan ganda</p>
+  </header>
+
+  <form id="start" class="card" novalidate>
+    <label class="field" for="nama">Nama lengkap
+      <input type="text" id="nama" maxlength="60" autocomplete="name">
+    </label>
+    <label class="field" for="kelas">Kelas (boleh dikosongkan)
+      <input type="text" id="kelas" maxlength="20">
+    </label>
+    <p class="meta" style="margin-bottom:14px">Pilih satu jawaban untuk setiap soal. Setiap jawaban benar bernilai 4, nilai tertinggi 100.</p>
+    <p class="error" id="nameError" role="alert" hidden>Tulis nama lengkap dulu sebelum mulai.</p>
+    <button type="submit">Mulai mengerjakan</button>
+  </form>
+
+  <form id="quiz" novalidate hidden>
+    <div class="progress">
+      <div><span id="pName"></span><span id="pCount"></span></div>
+      <div class="bar"><i id="pBar"></i></div>
+    </div>
+    <div id="questions"></div>
+    <p class="error" id="quizError" role="alert" hidden></p>
+    <button type="submit">Kirim jawaban dan lihat nilai</button>
+  </form>
+
+  <section id="result" class="card result" tabindex="-1" hidden>
+    <h2>Selamat, kamu sudah menyelesaikan soal!</h2>
+    <p class="who" id="rName"></p>
+    <p class="meta" id="rClass"></p>
+    <div class="score"><small>Nilai</small><b id="rScore"></b><small>dari 100</small></div>
+    <div class="tally"><span class="ok" id="rRight"></span><span class="no" id="rWrong"></span></div>
+    <p class="meta">Hasil per nomor (✓ benar, ✗ salah)</p>
+    <ol class="grid" id="rGrid"></ol>
+    <p class="meta" id="rTime"></p>
+    <p style="margin:8px 0 20px">Tangkap layar (screenshot) halaman ini, lalu kirimkan kepada guru.</p>
+    <button type="button" class="ghost" id="again">Ganti peserta</button>
+  </section>
+</main>
+
+<script>
+// [soal, [a, b, c, d], indeks jawaban benar]
+const Q = [
+["Gerakan yang menjadi salah satu latar belakang munculnya Daulah Abbasiyah adalah ketidakpuasan terhadap pemerintahan ....",["Khulafaur Rasyidin","Bani Umayyah","Daulah Ayyubiyah","Daulah Fatimiyah"],1],
+["Daulah Abbasiyah dinisbatkan kepada Al-Abbas bin Abdul Muthalib, yaitu ....",["paman Nabi Muhammad saw.","saudara sepupu Abu Sufyan","salah seorang khalifah Umayyah","panglima perang Romawi"],0],
+["Tokoh yang dikenal sebagai khalifah pertama Daulah Abbasiyah adalah ....",["Abu Ja'far al-Mansur","Harun ar-Rasyid","Abu al-Abbas as-Saffah","Al-Ma'mun"],2],
+["Kemenangan pasukan Abbasiyah atas pasukan Umayyah dalam Pertempuran Zab pada tahun 750 M membuka jalan bagi ....",["berdirinya Daulah Ayyubiyah","berakhirnya kekuasaan Bani Umayyah di Damaskus","penaklukan Konstantinopel","berdirinya Dinasti Fatimiyah"],1],
+["Salah satu tokoh penting yang membantu gerakan Abbasiyah di wilayah Khurasan adalah ....",["Salahuddin al-Ayyubi","Amr bin Ash","Tariq bin Ziyad","Abu Muslim al-Khurasani"],3],
+["Sikap yang dapat diteladani dari proses berdirinya Daulah Abbasiyah adalah ....",["mengutamakan persatuan dan perjuangan yang terencana","memaksakan kehendak kepada kelompok lain","mengabaikan ilmu pengetahuan","mengutamakan kepentingan pribadi"],0],
+["Khalifah yang membangun Kota Baghdad sebagai pusat pemerintahan Daulah Abbasiyah adalah ....",["Abu al-Abbas as-Saffah","Abu Ja'far al-Mansur","Harun ar-Rasyid","Al-Mu'tasim"],1],
+["Kota Baghdad berkembang menjadi pusat ilmu pengetahuan karena ....",["melarang kedatangan ilmuwan asing","hanya mengembangkan kegiatan perdagangan","mendukung kegiatan belajar, penerjemahan, dan penelitian","memusatkan seluruh kegiatan pada bidang militer"],2],
+["Lembaga terkenal pada masa Abbasiyah yang berperan dalam penerjemahan dan pengembangan ilmu pengetahuan adalah ....",["Baitul Mal","Darun Nadwah","Masjid Quba","Baitul Hikmah"],3],
+["Salah satu faktor yang mendorong kemajuan ekonomi pada masa Daulah Abbasiyah adalah ....",["berkembangnya perdagangan dan pertanian","ditutupnya jalur perdagangan","dihentikannya kegiatan pertanian","larangan penggunaan mata uang"],0],
+["Kemajuan dalam bidang sosial pada masa Abbasiyah antara lain terlihat dari ....",["penghapusan seluruh kegiatan pendidikan","berkembangnya kota dan kehidupan masyarakat yang beragam","larangan masyarakat bekerja di luar istana","pemusatan penduduk hanya di desa"],1],
+["Kemajuan seni dan arsitektur pada masa Abbasiyah dapat dilihat melalui ....",["penghentian pembangunan kota","penghapusan seni hias","pembangunan masjid, istana, dan bangunan kota","larangan penggunaan kaligrafi"],2],
+["Ilmuwan Muslim yang dikenal sebagai tokoh penting dalam perkembangan aljabar adalah ....",["Al-Khawarizmi","Imam Malik","Imam Bukhari","Al-Tabari"],0],
+["Ilmu yang mempelajari benda-benda langit dan pergerakannya disebut ....",["geografi","astronomi","kedokteran","kimia"],1],
+["Jabir bin Hayyan dikenal memiliki kontribusi besar dalam perkembangan ilmu ....",["fikih","tafsir","kimia","hadis"],2],
+["Al-Kindi dikenal sebagai ilmuwan Muslim yang banyak memberikan sumbangan dalam bidang ....",["filsafat dan berbagai ilmu pengetahuan","ilmu hadis saja","ilmu tafsir saja","ilmu peperangan saja"],0],
+["Salah satu peran Baitul Hikmah dalam kemajuan ilmu pengetahuan adalah ....",["menjadi tempat latihan pasukan","menjadi pusat penerjemahan dan kajian ilmu","menjadi tempat penyimpanan senjata","menjadi pusat pemungutan pajak"],1],
+["Jika seorang pelajar ingin meneladani para ilmuwan Muslim masa Abbasiyah, tindakan yang paling tepat adalah ....",["menghindari diskusi ilmiah","belajar hanya ketika akan ujian","menolak pengetahuan dari bangsa lain","tekun belajar, meneliti, dan terbuka terhadap ilmu yang bermanfaat"],3],
+["Ilmuwan Muslim yang dikenal dalam bidang kedokteran dan menulis karya penting tentang pengobatan adalah ....",["Ar-Razi","Abu Hanifah","Abu Dawud","Ahmad bin Hanbal"],0],
+["Kitab Sahih al-Bukhari disusun oleh ulama ahli hadis bernama ....",["Imam Muslim","Imam Bukhari","Imam Abu Dawud","Imam at-Tirmidzi"],1],
+["Ulama yang menyusun kitab Sahih Muslim adalah ....",["Imam Malik","Imam an-Nasa'i","Imam Muslim","Ibnu Majah"],2],
+["Imam Abu Hanifah dikenal sebagai pendiri mazhab ....",["Hanafi","Maliki","Syafi'i","Hanbali"],0],
+["Imam Malik menyusun kitab terkenal yang berjudul ....",["Sahih Muslim","Al-Umm","Musnad Ahmad","Al-Muwatta"],3],
+["Ulama yang dikenal sebagai pendiri mazhab Syafi'i adalah ....",["Imam Ahmad bin Hanbal","Imam Syafi'i","Imam Abu Hanifah","Imam Malik"],1],
+["Salah satu karya penting dalam bidang tafsir yang disusun oleh Muhammad bin Jarir at-Tabari adalah ....",["Al-Muwatta","Sahih al-Bukhari","Jami' al-Bayan","Al-Umm"],2]
+];
+const KEY = "kuis-abbasiyah";
+const $ = id => document.getElementById(id);
+let state = {name:"", kelas:"", answers:Array(Q.length).fill(null), stage:"start", time:""};
+try {
+  const s = JSON.parse(localStorage.getItem(KEY));
+  if (s && Array.isArray(s.answers) && s.answers.length === Q.length) state = s;
+} catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+
+function buildQuestions(){
+  const box = $("questions"); box.textContent = "";
+  Q.forEach(([text, opts], i) => {
+    const fs = document.createElement("fieldset"); fs.id = "s" + i;
+    const lg = document.createElement("legend"); lg.textContent = (i+1) + ". " + text; fs.append(lg);
+    opts.forEach((o, j) => {
+      const l = document.createElement("label"); l.className = "opt";
+      const r = document.createElement("input");
+      r.type = "radio"; r.name = "q" + i; r.id = "q" + i + "-" + j; r.value = j;
+      r.checked = state.answers[i] === j;
+      r.addEventListener("change", () => {
+        state.answers[i] = j; fs.classList.remove("missing"); $("quizError").hidden = true; save(); progress();
+      });
+      const t = document.createElement("span"); t.textContent = "abcd"[j] + ". " + o;
+      l.append(r, t); fs.append(l);
+    });
+    box.append(fs);
+  });
+}
+function progress(){
+  const n = state.answers.filter(a => a !== null).length;
+  $("pName").textContent = state.name;
+  $("pCount").textContent = n + " dari " + Q.length + " dijawab";
+  $("pBar").style.width = (n / Q.length * 100) + "%";
+}
+function showResult(){
+  const marks = Q.map((q, i) => state.answers[i] === q[2]);
+  const right = marks.filter(Boolean).length;
+  $("rName").textContent = state.name;
+  $("rClass").textContent = state.kelas ? "Kelas " + state.kelas.replace(/^kelas\s+/i, "") : "";
+  $("rScore").textContent = Math.round(right / Q.length * 100);
+  $("rRight").textContent = "Benar: " + right;
+  $("rWrong").textContent = "Salah: " + (Q.length - right);
+  $("rGrid").textContent = "";
+  marks.forEach((m, i) => {
+    const li = document.createElement("li"); li.className = m ? "ok" : "no";
+    li.textContent = (i+1) + (m ? " ✓" : " ✗"); $("rGrid").append(li);
+  });
+  $("rTime").textContent = "Dikirim: " + state.time;
+}
+function render(){
+  $("start").hidden = state.stage !== "start";
+  $("quiz").hidden = state.stage !== "quiz";
+  $("result").hidden = state.stage !== "result";
+  $("nama").value = state.name; $("kelas").value = state.kelas;
+  if (state.stage === "quiz") { buildQuestions(); progress(); }
+  if (state.stage === "result") showResult();
+}
+$("start").addEventListener("submit", e => {
+  e.preventDefault();
+  const name = $("nama").value.trim();
+  if (!name) { $("nameError").hidden = false; $("nama").focus(); return; }
+  $("nameError").hidden = true;
+  state.name = name; state.kelas = $("kelas").value.trim(); state.stage = "quiz";
+  save(); render(); window.scrollTo(0, 0);
+});
+$("quiz").addEventListener("submit", e => {
+  e.preventDefault();
+  const missing = state.answers.map((a, i) => a === null ? i : -1).filter(i => i >= 0);
+  if (missing.length) {
+    missing.forEach(i => $("s" + i).classList.add("missing"));
+    $("quizError").textContent = "Masih ada soal yang belum dijawab: nomor " + missing.map(i => i+1).join(", ") + ".";
+    $("quizError").hidden = false;
+    $("s" + missing[0]).scrollIntoView({block:"start"});
+    $("q" + missing[0] + "-0").focus({preventScroll:true});
+    return;
+  }
+  state.stage = "result";
+  state.time = new Date().toLocaleString("id-ID", {dateStyle:"long", timeStyle:"short"});
+  save(); render(); window.scrollTo(0, 0); $("result").focus({preventScroll:true});
+});
+$("again").addEventListener("click", () => {
+  state = {name:"", kelas:"", answers:Array(Q.length).fill(null), stage:"start", time:""};
+  save(); render(); window.scrollTo(0, 0);
+});
+render();
+</script>
+
+</body></html>
